@@ -24,3 +24,62 @@ Prerrequisitos
 Java 11 o superior
 Maven para la gestión de dependencias
 MongoDB en ejecución localmente o configurado para acceso remoto
+
+### Paso 1: Clonar el repositorio
+```
+   git clone https://github.com/usuario/FondoBTG.git
+   cd FondoBTG
+```
+
+### Paso 2: Configurar MongoDB
+Asegúrate de que MongoDB esté corriendo en tu máquina local en el puerto predeterminado 27017. Si deseas cambiar la configuración, actualiza el archivo application.properties en la carpeta src/main/resources.
+```
+   spring.data.mongodb.uri=mongodb://localhost:27017/fondosbtg
+```
+
+### Paso 3: Compilar y ejecutar la aplicación
+Usa Maven para compilar el proyecto y ejecutar la aplicación.
+```
+mvn clean install
+mvn spring-boot:run
+```
+
+La aplicación estará disponible en http://localhost:8080.
+
+## Uso de la API
+
+### Endpoints Principales
+
+#### Crear Usuario
+
+- URL: POST /usuarios
+- Body: JSON con datos del usuario
+- Descripción: Crea un nuevo usuario en el sistema.
+
+#### Eliminar Usuario
+
+- URL: DELETE /usuarios/{usuarioId}
+- Descripción: Elimina un usuario de la base de datos.
+
+#### Suscribir a Fondo
+
+- URL: POST /usuarios/{usuarioId}/suscribir/{fondoId}
+- Descripción: Permite a un usuario suscribirse a un fondo si tiene saldo suficiente.
+
+#### Cancelar Suscripción
+
+- URL: DELETE /usuarios/{usuarioId}/cancelar/{fondoId}
+- Descripción: Cancela la suscripción de un usuario a un fondo y reembolsa el monto mínimo al saldo del usuario.
+
+Ejemplo de Solicitud de Suscripción
+Para suscribir a un usuario a un fondo, realiza una solicitud POST a:
+```
+POST http://localhost:8080/usuarios/{usuarioId}/suscribir/{fondoId}
+```
+
+## Manejo de Errores
+La aplicación maneja errores comunes y devuelve mensajes claros para casos como:
+
+- Formato de ID Inválido: Si el usuarioId o fondoId proporcionado no es un ID válido, se devolverá un mensaje indicando el error de formato.
+- Saldo Insuficiente: Si el usuario no tiene saldo suficiente, la aplicación notificará que no puede suscribirse al fondo.
+- Usuario o Fondo No Encontrado: Si el usuario o fondo no existe en la base de datos, se devolverá un mensaje indicando que no se encontró.
