@@ -1,114 +1,157 @@
-//package com.btg.fondosbtg.service;
-//
-//import com.btg.fondosbtg.model.Fondo;
-//import com.btg.fondosbtg.model.Transaccion;
-//import com.btg.fondosbtg.model.Usuario;
-//import com.btg.fondosbtg.repository.FondoRepository;
-//import com.btg.fondosbtg.repository.TransaccionRepository;
-//import com.btg.fondosbtg.repository.UsuarioRepository;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//import org.junit.jupiter.api.TestInstance;
-//import org.mockito.InjectMocks;
-//import org.mockito.Mock;
-//import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo;
-//import org.springframework.boot.test.context.SpringBootTest;
-//
-//import java.util.Optional;
-//
-//
-//import static org.junit.jupiter.api.Assertions.assertEquals;
-//import static org.mockito.ArgumentMatchers.any;
-//import static org.mockito.Mockito.*;
-//
-//
-//@SpringBootTest
-//@AutoConfigureDataMongo
-//@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-//class FondoServiceTest {
-//
-//    @InjectMocks
-//    private FondoService fondoService;
-//
-//    @Mock
-//    private NotificacionService notificacionService;
-//
-//    @Mock
-//    private FondoRepository fondoRepository;
-//
-//    @Mock
-//    private UsuarioRepository usuarioRepository;
-//
-//    @Mock
-//    private TransaccionRepository transaccionRepository;
-//
-//    @BeforeEach
-//    void setup() {
-//        fondoRepository.deleteAll();
-//        usuarioRepository.deleteAll();
-//        transaccionRepository.deleteAll();
-//
-//    }
-//
-//    @Test
-//    void testSuscribirAFondo_success() {
-//        // Given
-//        Fondo fondo = Fondo.builder()
-//                .id("1")
-//                .nombre("FPV_BTG_PACTUAL_RECAUDADORA")
-//                .montoMinimo(75000)
-//                .categoria("FPV")
-//                .build();
-//
-//        Usuario usuario = Usuario.builder()
-//                .id("1")
-//                .nombre("User")
-//                .email("user@example.com")
-//                .saldo(500000)
-//                .telefono("555-1234")
-//                .build();
-//
-//        when(fondoRepository.findById("1")).thenReturn(Optional.of(fondo));
-//        when(usuarioRepository.findById("1")).thenReturn(Optional.of(usuario));
-//        when(usuarioRepository.save(any(Usuario.class))).thenReturn(usuario);
-//
-//        // When
-//        String result = fondoService.suscribirAFondo("1", "1");
-//
-//        // Then
-//        assertEquals("Suscripción exitosa al fondo: FPV_BTG_PACTUAL_RECAUDADORA", result);
-//        verify(usuarioRepository).save(usuario);
-//        verify(transaccionRepository).save(any(Transaccion.class));
-//        verify(notificacionService).enviarNotificacion(usuario, "Suscripción exitosa al fondo: " + fondo.getNombre());
-//    }
-//
-//    @Test
-//    void testSuscribirAFondo_insufficientFunds() {
-//        // Given
-//        Fondo fondo = Fondo.builder()
-//                .id("1")
-//                .nombre("FPV_BTG_PACTUAL_RECAUDADORA")
-//                .montoMinimo(75000)
-//                .categoria("FPV")
-//                .build();
-//
-//        Usuario usuario = Usuario.builder()
-//                .id("1")
-//                .nombre("User")
-//                .email("user@example.com")
-//                .saldo(50000)
-//                .telefono(null)
-//                .build(); // Not enough funds
-//
-//        when(fondoRepository.findById("1")).thenReturn(Optional.of(fondo));
-//        when(usuarioRepository.findById("1")).thenReturn(Optional.of(usuario));
-//
-//        // When
-//        String result = fondoService.suscribirAFondo("1", "1");
-//
-//        // Then
-//        assertEquals("No tiene saldo disponible para vincularse al fondo FPV_BTG_PACTUAL_RECAUDADORA", result);
-//        verify(usuarioRepository, never()).save(any());
-//        verify(notificacionService, never()).enviarNotificacion(any(), any());
-//    }
-//}
+package com.btg.fondosbtg.service;
+
+import com.btg.fondosbtg.exception.InvalidObjectIdException;
+import com.btg.fondosbtg.exception.UsuarioNotFoundException;
+import com.btg.fondosbtg.exception.FondoNotFoundException;
+import com.btg.fondosbtg.model.Fondo;
+import com.btg.fondosbtg.model.Transaccion;
+import com.btg.fondosbtg.model.Usuario;
+import com.btg.fondosbtg.repository.TransaccionRepository;
+import com.btg.fondosbtg.repository.UsuarioRepository;
+import org.bson.types.ObjectId;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
+class UsuarioServiceTest {
+
+    @Mock
+    private UsuarioRepository usuarioRepository;
+
+    @Mock
+    private FondoService fondoService;
+
+    @Mock
+    private TransaccionRepository transaccionRepository;
+
+    @InjectMocks
+    private UsuarioService usuarioService;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
+
+    @Test
+    void testCrearUsuario() {
+        Usuario usuario = new Usuario();
+        usuario.setNombre("John Doe");
+
+        when(usuarioRepository.save(any(Usuario.class))).thenReturn(usuario);
+
+        Usuario createdUsuario = usuarioService.crearUsuario(usuario);
+
+        assertNotNull(createdUsuario);
+        assertEquals("John Doe", createdUsuario.getNombre());
+        verify(usuarioRepository, times(1)).save(usuario);
+    }
+
+    @Test
+    void testEliminarUsuario_Success() {
+        String userId = new ObjectId().toString();
+
+        when(usuarioRepository.existsById(any(ObjectId.class))).thenReturn(true);
+
+        String result = usuarioService.eliminarUsuario(userId);
+
+        assertEquals("Usuario eliminado correctamente.", result);
+        verify(usuarioRepository, times(1)).deleteById(any(ObjectId.class));
+    }
+
+    @Test
+    void testEliminarUsuario_UsuarioNotFound() {
+        String userId = new ObjectId().toString();
+
+        when(usuarioRepository.existsById(any(ObjectId.class))).thenReturn(false);
+
+        assertThrows(UsuarioNotFoundException.class, () -> usuarioService.eliminarUsuario(userId));
+    }
+
+    @Test
+    void testSuscribirAFondo_Success() {
+        String usuarioId = new ObjectId().toString();
+        String fondoId = new ObjectId().toString();
+
+        Usuario usuario = new Usuario();
+        usuario.setSaldo(1000);
+        Fondo fondo = new Fondo();
+        fondo.setMontoMinimo(500);
+        fondo.setNombre("Fondo A");
+
+        when(usuarioRepository.findById(any(ObjectId.class))).thenReturn(Optional.of(usuario));
+        when(fondoService.obtenerFondoPorId(fondoId)).thenReturn(Optional.of(fondo));
+
+        String result = usuarioService.suscribirAFondo(usuarioId, fondoId);
+
+        assertEquals("Suscripción al fondo Fondo A completada con éxito.", result);
+        verify(usuarioRepository, times(1)).save(usuario);
+        verify(transaccionRepository, times(1)).save(any(Transaccion.class));
+    }
+
+    @Test
+    void testSuscribirAFondo_InsufficientFunds() {
+        String usuarioId = new ObjectId().toString();
+        String fondoId = new ObjectId().toString();
+
+        Usuario usuario = new Usuario();
+        usuario.setSaldo(200);
+        Fondo fondo = new Fondo();
+        fondo.setMontoMinimo(500);
+        fondo.setNombre("Fondo A");
+
+        when(usuarioRepository.findById(any(ObjectId.class))).thenReturn(Optional.of(usuario));
+        when(fondoService.obtenerFondoPorId(fondoId)).thenReturn(Optional.of(fondo));
+
+        String result = usuarioService.suscribirAFondo(usuarioId, fondoId);
+
+        assertEquals("No tiene saldo disponible para vincularse al fondo Fondo A", result);
+        verify(usuarioRepository, never()).save(usuario);
+        verify(transaccionRepository, never()).save(any(Transaccion.class));
+    }
+
+    @Test
+    void testCancelarSuscripcion_Success() {
+        String usuarioId = new ObjectId().toString();
+        String fondoId = new ObjectId().toString();
+
+        Usuario usuario = new Usuario();
+        usuario.getFondos().add(fondoId);
+        Fondo fondo = new Fondo();
+        fondo.setMontoMinimo(500);
+        fondo.setNombre("Fondo A");
+
+        when(usuarioRepository.findById(any(ObjectId.class))).thenReturn(Optional.of(usuario));
+        when(fondoService.obtenerFondoPorId(fondoId)).thenReturn(Optional.of(fondo));
+
+        String result = usuarioService.cancelarSuscripcion(usuarioId, fondoId);
+
+        assertEquals("Cancelación del fondo Fondo A realizada con éxito.", result);
+        assertFalse(usuario.getFondos().contains(fondoId));
+        verify(usuarioRepository, times(1)).save(usuario);
+        verify(transaccionRepository, times(1)).save(any(Transaccion.class));
+    }
+
+    @Test
+    void testCancelarSuscripcion_FondoNotFound() {
+        String usuarioId = new ObjectId().toString();
+        String fondoId = new ObjectId().toString();
+
+        Usuario usuario = new Usuario();
+
+        when(usuarioRepository.findById(any(ObjectId.class))).thenReturn(Optional.of(usuario));
+        when(fondoService.obtenerFondoPorId(fondoId)).thenReturn(Optional.empty());
+
+        assertThrows(FondoNotFoundException.class, () -> usuarioService.cancelarSuscripcion(usuarioId, fondoId));
+        verify(usuarioRepository, never()).save(usuario);
+    }
+
+
+}

@@ -1,5 +1,7 @@
 package com.btg.fondosbtg.service;
 
+import com.btg.fondosbtg.exception.FondoNotFoundException;
+import com.btg.fondosbtg.exception.InvalidObjectIdException;
 import com.btg.fondosbtg.model.Fondo;
 import com.btg.fondosbtg.repository.FondoRepository;
 import com.btg.fondosbtg.repository.TransaccionRepository;
@@ -32,15 +34,8 @@ public class FondoService {
 
 
     public Optional<Fondo> obtenerFondoPorId(String fondoId) {
-        ObjectId fondoObjectId;
-        try {
-            fondoObjectId = new ObjectId(fondoId);
-
-        } catch (IllegalArgumentException e) {
-
-            return Optional.empty();
-        }
-        return fondoRepository.findById(fondoObjectId);
+        ObjectId objectId = convertirAObjectId(fondoId);
+        return fondoRepository.findById(objectId);
     }
 
     public Fondo crearFondo(Fondo fondo) {
@@ -48,20 +43,22 @@ public class FondoService {
     }
 
     public String eliminarFondo(String fondoId) {
-        ObjectId fondoObjectId;
-        try {
-            fondoObjectId = new ObjectId(fondoId);
 
-        } catch (IllegalArgumentException e) {
+        ObjectId objectId = convertirAObjectId(fondoId);
 
-            return "Formato de Id invalido. Por favor proporcione un usuarioId y fondoId validos.";
-        }
-
-        if (fondoRepository.existsById(fondoObjectId)) {
-            fondoRepository.deleteById(fondoObjectId);
+        if (fondoRepository.existsById(objectId)) {
+            fondoRepository.deleteById(objectId);
             return "Fondo eliminado correctamente.";
         } else {
-            return "Fondo no encontrado.";
+            throw new FondoNotFoundException("Fondo no encontrado.");
+        }
+    }
+
+    private ObjectId convertirAObjectId(String id) {
+        try {
+            return new ObjectId(id);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidObjectIdException("Formato de Id invalido. Por favor proporcione un usuarioId y fondoId validos.");
         }
     }
 }

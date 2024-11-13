@@ -5,6 +5,8 @@ import com.btg.fondosbtg.service.FondoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/fondos")
 public class FondoController {
@@ -21,5 +23,10 @@ public class FondoController {
     @DeleteMapping("/eliminar/{id}")
     public String eliminarFondo(@PathVariable String id) {
         return fondoService.eliminarFondo(id);
+    }
+
+    @GetMapping
+    public List<Fondo> obtenerTodosLosFondos() {
+        return fondoService.obtenerTodosLosFondos();
     }
 }
