@@ -76,10 +76,20 @@ Para suscribir a un usuario a un fondo, realiza una solicitud POST a:
 ```
 POST http://localhost:8080/usuarios/{usuarioId}/suscribir/{fondoId}
 ```
-
 ## Manejo de Errores
 La aplicación maneja errores comunes y devuelve mensajes claros para casos como:
 
 - Formato de ID Inválido: Si el usuarioId o fondoId proporcionado no es un ID válido, se devolverá un mensaje indicando el error de formato.
 - Saldo Insuficiente: Si el usuario no tiene saldo suficiente, la aplicación notificará que no puede suscribirse al fondo.
 - Usuario o Fondo No Encontrado: Si el usuario o fondo no existe en la base de datos, se devolverá un mensaje indicando que no se encontró.
+
+
+# Solucion a parte 2 del enunciado. Consulta SQL:
+
+```
+SELECT DISTINCT c.nombre
+FROM Cliente c
+JOIN Inscripcion i ON c.id = i.idCliente
+JOIN Disponibilidad d ON i.idProducto = d.idProducto
+JOIN Visitan v ON c.id = v.idCliente AND d.idSucursal = v.idSucursal;
+```
