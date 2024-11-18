@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="39ae8a38-0ad7-4855-9008-b36caa192100" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/backend/README.md" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="JUnit5 Test Class" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="2oVJ7qBIierzklp63momlJYlHCR" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.FondosbtgApplication.executor": "Debug",
+    "JUnit.FondoServiceTest.executor": "Debug",
+    "JUnit.FondoServiceTest.testSuscribirAFondo_success.executor": "Debug",
+    "JUnit.UsuarioServiceTest.executor": "Debug",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/juanc/Documents/Laburo/Michael Page/BTG Pactual/fondosbtg"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.btg.fondosbtg.service" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.UsuarioServiceTest">
+    <configuration name="FondosbtgApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.btg.fondosbtg.FondosbtgApplication" />
+      <module name="fondosbtg" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.btg.fondosbtg.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FondoServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="fondosbtg" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.btg.fondosbtg.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.btg.fondosbtg.service" />
+      <option name="MAIN_CLASS_NAME" value="com.btg.fondosbtg.service.FondoServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FondoServiceTest.testSuscribirAFondo_success" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="fondosbtg" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.btg.fondosbtg.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.btg.fondosbtg.service" />
+      <option name="MAIN_CLASS_NAME" value="com.btg.fondosbtg.service.FondoServiceTest" />
+      <option name="METHOD_NAME" value="testSuscribirAFondo_success" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UsuarioServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="fondosbtg" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.btg.fondosbtg.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.btg.fondosbtg.service" />
+      <option name="MAIN_CLASS_NAME" value="com.btg.fondosbtg.service.UsuarioServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.UsuarioServiceTest" />
+        <item itemvalue="Application.FondosbtgApplication" />
+        <item itemvalue="JUnit.FondoServiceTest" />
+        <item itemvalue="JUnit.FondoServiceTest.testSuscribirAFondo_success" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="39ae8a38-0ad7-4855-9008-b36caa192100" name="Changes" comment="" />
+      <created>1730948645081</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1730948645081</updated>
+    </task>
+    <servers />
+  </component>
+</project>
